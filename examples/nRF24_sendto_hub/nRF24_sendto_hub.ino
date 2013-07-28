@@ -19,7 +19,7 @@ https://github.com/stanleyseow/RF24
  stanleyseow@gmail.com
 */
 
-#include <LiquidCrystal.h>
+//#include <LiquidCrystal.h>
 #include <SPI.h>
 #include "nRF24L01.h"
 #include "RF24.h"
@@ -27,7 +27,7 @@ https://github.com/stanleyseow/RF24
 
 #define RF_SETUP 0x17
 
-LiquidCrystal lcd(10, 7, 3, 4, 5, 6);
+//LiquidCrystal lcd(10, 7, 3, 4, 5, 6);
 // Make way for the SPI pins
 // 10 -> LCD 4
 // 7  -> LCD 6
@@ -37,7 +37,7 @@ LiquidCrystal lcd(10, 7, 3, 4, 5, 6);
 // 6  -> LCD 14
 
 // Set up nRF24L01 radio on SPI pin for CE, CSN
-RF24 radio(8,9);
+RF24 radio(9,10);
 
 // For best performance, use P1-P5 for writing and Pipe0 for reading as per the hub setting
 // Below is the settings from the hub/receiver listening to P0 to P5
@@ -58,10 +58,10 @@ void setup(void)
 {
 
   // Setup LCD
-  lcd.begin(16,2);
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Remote Node V0.99");
+  //lcd.begin(16,2);
+  //lcd.clear();
+  //lcd.setCursor(0,0);
+  //lcd.print("Remote Node V0.99");
   
   Serial.begin(57600);
   
@@ -151,8 +151,8 @@ void loop(void)
     //lcd.clear();
     //lcd.setCursor(0,0);
 
-    lcd.setCursor(2,0);
-    lcd.print(outBuffer);
+    //lcd.setCursor(2,0);
+    //lcd.print(outBuffer);
 
     send_time = millis();
     
@@ -162,13 +162,13 @@ void loop(void)
     // Send to hub
     if ( radio.write( outBuffer, strlen(outBuffer)) ) {
        printf("Send successful\n\r"); 
-       lcd.setCursor(0,0);
-       lcd.print("1:");
+       //lcd.setCursor(0,0);
+       //lcd.print("1:");
     }
     else {
        printf("Send failed\n\r");
-       lcd.setCursor(0,0);
-       lcd.print("0:");  
+       //lcd.setCursor(0,0);
+       //lcd.print("0:");  
     }
   
     radio.startListening();
@@ -194,11 +194,11 @@ void loop(void)
              // Turn on buzzer to Pin 2
              digitalWrite(2,HIGH);
 
-             lcd.setCursor(0,1);
-             lcd.print("                ");
+             //lcd.setCursor(0,1);
+             //lcd.print("                ");
 
-             lcd.setCursor(0,1);
-             lcd.print(rtt);
+             //lcd.setCursor(0,1);
+             //lcd.print(rtt);
          }       
     
     // Check for timeout and exit the while loop
@@ -214,8 +214,3 @@ void loop(void)
     digitalWrite(2,LOW); // Off the buzzer
     
   }
-
-
-
-
-
