@@ -33,7 +33,7 @@ using namespace std;
 const uint64_t pipes[6] = { 0x7365727631LL, 0xF0F0F0F0E1LL, 0xF0F0F0F0E2LL, 0xF0F0F0F0E3LL, 0xF0F0F0F0E4, 0xF0F0F0F0E5 };
 
 // CE and CSN pins On header using GPIO numbering (not pin numbers)
-RF24 radio("/dev/spidev0.0",8000000,25);  // Setup for GPIO 25 CSN
+RF24 radio("/dev/spidev0.0",8000000,18);  // Setup for GPIO 18 CSN
 
 
 void setup(void)
