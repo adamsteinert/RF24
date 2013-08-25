@@ -22,7 +22,7 @@ setup(
     ext_modules = [
     Extension("pyRF24", 
               sources=["pyRF24.pyx"],
-              libraries=["librf24"],          # refers to installed "librf24.so"
+              libraries=["rf24"],          # refers to installed "librf24.so"
               language="c++",
               extra_compile_args=["-I../librf24", "-fopenmp", "-O3"],
               extra_link_args=["-L./usr/local/lib"]
