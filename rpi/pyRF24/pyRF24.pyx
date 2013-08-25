@@ -58,13 +58,13 @@ cdef class pyRF24:
 	def __dealloc__(self):
 		del self.rf24
 	def begin(self):
-		return self.rf24.begin()
+		self.rf24.begin()
 	def resetcfg(self):
-		return self.rf24.resetcfg()
+		self.rf24.resetcfg()
 	def startListening(self):
-		return self.rf24.startListening()
+		self.rf24.startListening()
 	def stopListening(self):
-		return self.rf24.stopListening()
+		self.rf24.stopListening()
 	def write(self, const void* buf, unsigned char length):
 		return self.rf24.write(buf, length)
 	def available(self):
@@ -72,31 +72,31 @@ cdef class pyRF24:
 	def read(self, void* buf, unsigned char length):
 		return self.rf24.read(buf, length)
 	def openWritingPipe(self, unsigned long long address):
-		return self.rf24.openWritingPipe(address)
+		self.rf24.openWritingPipe(address)
 	def openReadingPipe(self, unsigned char number, unsigned long long address):
-		return self.rf24.openReadingPipe(number, address)
+		self.rf24.openReadingPipe(number, address)
 	def setRetries(self, unsigned char delay, unsigned char count):
-		return self.rf24.setRetries(delay, count)
+		self.rf24.setRetries(delay, count)
 	def setChannel(self, unsigned char channel):
-		return self.rf24.setChannel(channel)
+		self.rf24.setChannel(channel)
 	def setPayloadSize(self, unsigned char size):
-		return self.rf24.setPayloadSize(size)
+		self.rf24.setPayloadSize(size)
 	def getPayloadSize(self):
 		return self.rf24.getPayloadSize()
 	def getDynamicPayloadSize(self):
 		return self.rf24.getDynamicPayloadSize()
 	def enableAckPayload(self):
-		return self.rf24.enableAckPayload()
+		self.rf24.enableAckPayload()
 	def enableDynamicPayloads(self):
-		return self.rf24.enableDynamicPayloads()
+		self.rf24.enableDynamicPayloads()
 	def isPVariant(self):
 		return self.rf24.isPVariant()
 	def setAutoAck(self, bool enable):
-		return self.rf24.setAutoAck(enable)
+		self.rf24.setAutoAck(enable)
 	def setAutoAck(self, unsigned char pipe, bool enable):
-		return self.rf24.setAutoAck(pipe, enable)
+		self.rf24.setAutoAck(pipe, enable)
 	def setPALevel(self, rf24_pa_dbm_e level):
-		return self.rf24.setPALevel(level)
+		self.rf24.setPALevel(level)
 	def getPALevel(self):
 		return self.rf24.getPALevel()
 	def setDataRate(self, rf24_datarate_e speed):
@@ -104,27 +104,27 @@ cdef class pyRF24:
 	def getDataRate(self):
 		return self.rf24.getDataRate()
 	def setCRCLength(self, rf24_crclength_e length):
-		return self.rf24.setCRCLength(length)
+		self.rf24.setCRCLength(length)
 	def getCRCLength(self):
 		return self.rf24.getCRCLength()
 	def disableCRC(self):
-		return self.rf24.disableCRC()
+		self.rf24.disableCRC()
 	def printDetails(self):
-		return self.rf24.printDetails()
+		self.rf24.printDetails()
 	def powerDown(self):
-		return self.rf24.powerDown()
+		self.rf24.powerDown()
 	def powerUp(self):
-		return self.rf24.powerUp()
+		self.rf24.powerUp()
 	def available(self, unsigned char* pipe_num):
 		return self.rf24.available(pipe_num)
 	def startWrite(self, const void* buf, unsigned char length):
-		return self.rf24.startWrite(buf, length)
+		self.rf24.startWrite(buf, length)
 	def writeAckPayload(self, unsigned char pipe, const void* buf, unsigned char length):
-		return self.rf24.writeAckPayload(pipe, buf, length)
+		self.rf24.writeAckPayload(pipe, buf, length)
 	def isAckPayloadAvailable(self):
 		return self.rf24.isAckPayloadAvailable()
 	def whatHappened(self, bool& tx_ok, bool& tx_fail, bool& rx_ready):
-		return self.rf24.whatHappened(tx_ok, tx_fail, rx_ready)
+		self.rf24.whatHappened(tx_ok, tx_fail, rx_ready)
 	def testCarrier(self):
 		return self.rf24.testCarrier()
 	def testRPD(self):
