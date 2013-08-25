@@ -23,7 +23,3 @@ Please refer to links :
 * [Source Code](https://github.com/maniacbug/RF24)
 * [Downloads](https://github.com/maniacbug/RF24/archives/master)
 * [nRF24L01+ datasheet](http://www.nordicsemi.com/eng/nordic/download_resource/8765/2/27999719 )
-
-
-
-
