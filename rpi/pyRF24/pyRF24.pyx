@@ -79,11 +79,13 @@ cdef class pyRF24:
 	def write(self, data):
 		cdef char *buf = data
 		return self.rf24.write(buf, len(data))
-	def available(self, pipe = 'NULL'):
-		if pipe == 'NULL':
+	def available(self, pipe = -1):
+		cdef unsigned char pipe_num
+		if pipe == -1:
 			return self.rf24.available(NULL)
 		else:
-			return self.rf24.available(pipe)
+			pipe_num = pipe	# Avoid potential issues if setting to -1
+			return self.rf24.available(&pipe_num)
 	def read(self, length):
 		cdef char *buf = ''
 		self.rf24.read(buf, length)
