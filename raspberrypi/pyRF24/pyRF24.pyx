@@ -42,16 +42,16 @@ cdef extern from "RF24.h":
         unsigned char getDynamicPayloadSize()
         void enableAckPayload()
         void enableDynamicPayloads()
-        bool isPVariant() 
+        bool isPVariant()
         void setAutoAck(bool)
-        void setAutoAck(unsigned char, bool) 
+        void setAutoAck(unsigned char, bool)
         void setPALevel(rf24_pa_dbm_e)
         rf24_pa_dbm_e getPALevel()
         bool setDataRate(rf24_datarate_e)
-        rf24_datarate_e getDataRate() 
+        rf24_datarate_e getDataRate()
         void setCRCLength(rf24_crclength_e)
         rf24_crclength_e getCRCLength()
-        void disableCRC() 
+        void disableCRC()
         void printDetails()
         void powerDown()
         void powerUp()
@@ -78,7 +78,7 @@ cdef class RF24:
     RF24_CRC_16 = 2
 
     cdef _RF24 *rf24
-    def __cinit__(self, _spidevice, _spispeed, _cepin, *, retries = None, 
+    def __cinit__(self, _spidevice, _spispeed, _cepin, *, retries = None,
             channel = None, payloadSize = None, ackPayload = None,
             dynamicPayloads = None, autoAck = None, dataRate = None,
             paLevel = None, crcLength = None, disableCrc = None):

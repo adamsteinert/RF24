@@ -34,7 +34,7 @@ for root, dirs, files in os.walk(".", topdown=False):
 setup(
     cmdclass = {'build_ext': build_ext},
     ext_modules = [
-    Extension("pyRF24", 
+    Extension("pyRF24",
                 sources=["pyRF24.pyx"],
                 libraries=["rf24"],          # refers to installed "librf24.so"
                 language="c++",
