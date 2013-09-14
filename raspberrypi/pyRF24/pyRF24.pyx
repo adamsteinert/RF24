@@ -84,7 +84,7 @@ cdef class RF24:
             paLevel = None, crcLength = None, disableCrc = None):
         # To bytes, avoiding "Obtaining 'char *' from temporary Python value"
         _spidevice_b = _spidevice.encode('ascii')
-        self.rf24 = new RF24(_spidevice_b, _spispeed, _cepin)
+        self.rf24 = new _RF24(_spidevice_b, _spispeed, _cepin)
         self.rf24.begin()
         if retries is not None:
             self.rf24.setRetries(retries[0], retries[1])
