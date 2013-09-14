@@ -25,7 +25,7 @@ cdef extern from "RF24.h":
     ctypedef enum rf24_crclength_e:
         RF24_CRC_DISABLED = 0, RF24_CRC_8, RF24_CRC_16
 
-    cdef cppclass RF24:
+    cdef cppclass _RF24:
         RF24(char*, unsigned int, unsigned char) except +
         void begin()
         void resetcfg()
@@ -63,7 +63,7 @@ cdef extern from "RF24.h":
         bool testCarrier()
         bool testRPD()
 
-cdef class pyRF24:
+cdef class RF24:
     RF24_PA_MIN = 0
     RF24_PA_LOW = 1
     RF24_PA_HIGH = 2
@@ -77,7 +77,7 @@ cdef class pyRF24:
     RF24_CRC_8 = 1
     RF24_CRC_16 = 2
 
-    cdef RF24 *rf24
+    cdef _RF24 *rf24
     def __cinit__(self, _spidevice, _spispeed, _cepin, *, retries = None, 
             channel = None, payloadSize = None, ackPayload = None,
             dynamicPayloads = None, autoAck = None, dataRate = None,
