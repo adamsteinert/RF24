@@ -13,9 +13,11 @@
 # limitations under the License.
 
 # setup.py, file based on Golgauth's answer
-# http://stackoverflow.com/questions/16993927/using-cython-to-link-python-to-a-shared-library
+# http://stackoverflow.com/questions/16993927/ \
+#    using-cython-to-link-python-to-a-shared-library
 import os
 import shutil
+import sys
 
 from distutils.core import setup
 from distutils.extension import Extension
@@ -24,13 +26,14 @@ from Cython.Distutils import build_ext
 # clean previous build
 for root, dirs, files in os.walk(".", topdown=False):
     for name in files:
-        if (name.startswith("pyRF24") and not(name.endswith(".pyx") or name.endswith(".pxd"))):
+        if (name.startswith("pyRF24") and not(name.endswith(".pyx") or
+                name.endswith(".pxd"))):
             os.remove(os.path.join(root, name))
     for name in dirs:
         if (name == "build"):
             shutil.rmtree(name)
 
-# build "pyRF24.so" python extension to be added to "PYTHONPATH" afterwards...
+# build pyRF24
 setup(
     cmdclass = {'build_ext': build_ext},
     ext_modules = [
@@ -43,3 +46,10 @@ setup(
             )
     ]
 )
+# add it to '/usr/local/lib/pythonx.x/dist-packages' for easy importing
+# also rename it from the crazy pyRF24.cpython-32mu.so
+# NOTE: requires sudo when running!
+for files in os.listdir("."):
+    if files.startswith("pyRF24") and files.endswith(".so"):
+        shutil.copy(files, '/usr/local/lib/python{}.{}/dist-packages/pyRF24.so'\
+            .format(sys.version_info[0], sys.version_info[1]))
