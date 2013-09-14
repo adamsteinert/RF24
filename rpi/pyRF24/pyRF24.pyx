@@ -1,6 +1,19 @@
-# Copyright August 2013 Jonathon Grigg <jonathongrigg@gmail.com>
-# Python3 wrapper for librf24 -- RF24 library for the RPi
+# Python3 wrapper for librf24 - RF24 library for the Raspberry Pi
 # cython: language_level=3
+
+# Copyright 2013 Jonathon Grigg <jonathongrigg@gmail.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 from libcpp cimport bool
 
@@ -65,9 +78,34 @@ cdef class pyRF24:
 	RF24_CRC_16 = 2
 
 	cdef RF24 *rf24
-	def __cinit__(self, _spidevice, _spispeed, _cepin):
-		self.rf24 = new RF24(_spidevice, _spispeed, _cepin)
+	def __cinit__(self, _spidevice, _spispeed, _cepin, *, retries = None, 
+			channel = None, payloadSize = None, ackPayload = None,
+			dynamicPayloads = None, autoAck = None, dataRate = None,
+			paLevel = None, crcLength = None, disableCrc = None):
+		# To bytes, avoiding "Obtaining 'char *' from temporary Python value"
+		_spidevice_b = _spidevice.encode('ascii')
+		self.rf24 = new RF24(_spidevice_b, _spispeed, _cepin)
 		self.rf24.begin()
+		if retries is not None:
+			self.rf24.setRetries(retries[0], retries[1])
+		if channel is not None:
+			self.rf24.setChannel(channel)
+		if payloadSize is not None:
+			self.rf24.setPayloadSize(payloadSize)
+		if ackPayload:
+			self.rf24.enableAckPayload()
+		if dynamicPayloads:
+			self.rf24.enableDynamicPayloads()
+		if autoAck is not None:
+			self.rf24.setAutoAck(autoAck)
+		if dataRate is not None:
+			self.rf24.setDataRate(dataRate)
+		if paLevel is not None:
+			self.rf24.setPALevel(paLevel)
+		if crcLength is not None:
+			self.rf24.setCRCLength(crcLength)
+		if disableCrc:
+			self.rf24.disableCRC()
 	def __dealloc__(self):
 		del self.rf24
 	def resetcfg(self):
@@ -77,8 +115,9 @@ cdef class pyRF24:
 	def stopListening(self):
 		self.rf24.stopListening()
 	def write(self, data):
-		cdef char *buf = data
-		return self.rf24.write(buf, len(data))
+		data_b = data.encode('ascii', 'replace')
+		cdef char *buf = data_b
+		return self.rf24.write(buf, len(data_b))
 	def available(self, pipe = -1):
 		cdef unsigned char pipe_num
 		if pipe == -1:
