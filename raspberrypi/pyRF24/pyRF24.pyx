@@ -25,8 +25,8 @@ cdef extern from "RF24.h":
     ctypedef enum rf24_crclength_e:
         RF24_CRC_DISABLED = 0, RF24_CRC_8, RF24_CRC_16
 
-    cdef cppclass _RF24:
-        _RF24(char*, unsigned int, unsigned char) except +
+    cdef cppclass RF24:
+        RF24(char*, unsigned int, unsigned char) except +
         void begin()
         void resetcfg()
         void startListening()
@@ -36,7 +36,7 @@ cdef extern from "RF24.h":
         void openWritingPipe(unsigned long long)
         void openReadingPipe(unsigned char, unsigned long long)
         void setRetries(unsigned char, unsigned char)
-        void setChannel(unsigned char)
+        void setChannel(unsigned cha)
         void setPayloadSize(unsigned char)
         unsigned char getPayloadSize()
         unsigned char getDynamicPayloadSize()
@@ -63,7 +63,7 @@ cdef extern from "RF24.h":
         bool testCarrier()
         bool testRPD()
 
-cdef class RF24:
+cdef class pyRF24:
     RF24_PA_MIN = 0
     RF24_PA_LOW = 1
     RF24_PA_HIGH = 2
@@ -77,14 +77,14 @@ cdef class RF24:
     RF24_CRC_8 = 1
     RF24_CRC_16 = 2
 
-    cdef _RF24 *rf24
+    cdef RF24 *rf24
     def __cinit__(self, _spidevice, _spispeed, _cepin, *, retries = None,
             channel = None, payloadSize = None, ackPayload = None,
             dynamicPayloads = None, autoAck = None, dataRate = None,
             paLevel = None, crcLength = None, disableCrc = None):
         # To bytes, avoiding "Obtaining 'char *' from temporary Python value"
         _spidevice_b = _spidevice.encode('ascii')
-        self.rf24 = new _RF24(_spidevice_b, _spispeed, _cepin)
+        self.rf24 = new RF24(_spidevice_b, _spispeed, _cepin)
         self.rf24.begin()
         if retries is not None:
             self.rf24.setRetries(retries[0], retries[1])
