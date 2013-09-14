@@ -26,7 +26,7 @@ cdef extern from "RF24.h":
         RF24_CRC_DISABLED = 0, RF24_CRC_8, RF24_CRC_16
 
     cdef cppclass _RF24:
-        RF24(char*, unsigned int, unsigned char) except +
+        _RF24(char*, unsigned int, unsigned char) except +
         void begin()
         void resetcfg()
         void startListening()
