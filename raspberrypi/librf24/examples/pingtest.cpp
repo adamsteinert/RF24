@@ -139,6 +139,7 @@ void loop(void)
   //
   // Ping out role.  Repeatedly send the current time
   //
+  unsigned long piz = 1;
 
   if (role == role_ping_out)
   {
@@ -146,14 +147,14 @@ void loop(void)
     radio.stopListening();
 
     // Take the time, and send it.  This will block until complete
-    unsigned long time = __millis();
+    unsigned long time = piz++; //__millis();
     printf("Now sending %lu...",time);
     bool ok = radio.write( &time, sizeof(unsigned long) );
     
     if (ok)
-      printf("ok...");
+      printf("rad write ok...");
     else
-      printf("failed.\n\r");
+      printf("rad write failed.\n\r");
 
     // Now, continue listening
     radio.startListening();
@@ -171,7 +172,7 @@ void loop(void)
     // Describe the results
     if ( timeout )
     {
-      printf("Failed, response timed out.\n\r");
+      printf("NORP Failed, response timed out.\n\r");
     }
     else
     {
