@@ -25,8 +25,6 @@
 //
 
 // Set up nRF24L01 radio on SPI bus plus pins 9 & 10
-
-//RF24 radio(9,10);
 RF24 radio("/dev/spidev0.0",8000000 , 25);  //spi device, speed and CSN,only CSN is NEEDED in RPI
 
 
@@ -37,18 +35,11 @@ const int role_pin = 7;
 //
 // Topology
 //
-
 // Radio pipe addresses for the 2 nodes to communicate.
 const uint64_t pipes[2] = { 0xF0F0F0F0E1LL, 0xF0F0F0F0D2LL };
 
 //
 // Role management
-//
-// Set up role.  This sketch uses the same software for all the nodes
-// in this system.  Doing so greatly simplifies testing.  The hardware itself specifies
-// which node it is.
-//
-// This is done through the role_pin
 //
 
 // The various roles supported by this sketch
@@ -65,26 +56,7 @@ void setup(void)
   //
   // Role
   //
-
-  // set up the role pin
- // pinMode(role_pin, INPUT);
-  //digitalWrite(role_pin,HIGH);
- // delay(20); // Just to get a solid reading on the role pin
-
-  // read the address pin, establish our role
-  //if ( ! digitalRead(role_pin) )
-    role = role_ping_out;
-  //else
-  //  role = role_pong_back;
-
-  //
-  // Print preamble:
-  //
-
-  //Serial.begin(115200);
-  //printf_begin();
-  printf("\n\rRF24/examples/pingpair/\n\r");
-  printf("ROLE: %s\n\r",role_friendly_name[role]);
+  role = role_ping_out;
 
   //
   // Setup and configure rf radio
@@ -95,11 +67,10 @@ void setup(void)
   // optionally, increase the delay between retries & # of retries
   radio.setRetries(15,15);
 
-  // optionally, reduce the payload size.  seems to
-  // improve reliability
-//  radio.setPayloadSize(8);
- radio.setChannel(0x4c);
-     radio.setPALevel(RF24_PA_MAX);
+  // optionally, reduce the payload size.  seems to improve reliability
+  // radio.setPayloadSize(8);
+  radio.setChannel(0x4c);
+  radio.setPALevel(RF24_PA_MAX);
 
   //
   // Open pipes to other nodes for communication
@@ -109,6 +80,8 @@ void setup(void)
   // back and forth.
   // Open 'our' pipe for writing
   // Open the 'other' pipe for reading, in position #1 (we can have up to 5 pipes open for reading)
+//    radio.openWritingPipe(pipes[0]);
+//    radio.openReadingPipe(1,pipes[1]);
 
   if ( role == role_ping_out )
   {
@@ -121,16 +94,15 @@ void setup(void)
     radio.openReadingPipe(1,pipes[0]);
   }
 
+
   //
   // Start listening
   //
-
   radio.startListening();
 
   //
   // Dump the configuration of the rf unit for debugging
   //
-
   radio.printDetails();
 }
 

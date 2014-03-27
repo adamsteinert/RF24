@@ -10,7 +10,7 @@ edo@lenotta.com
 #include <getopt.h>
 #include <cstdlib>
 #include <iostream>
-#include "../RF24.h";
+#include "../RF24.h"
  
 using namespace std;
 RF24 radio("/dev/spidev0.0",8000000 , 25);  //spi device, speed and CSN,only CSN is NEEDED in RPI
