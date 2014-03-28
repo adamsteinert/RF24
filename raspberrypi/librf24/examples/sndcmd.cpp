@@ -18,59 +18,59 @@ const int role_pin = 7;
 const uint64_t pipes[2] = { 0xF0F0F0F0E1LL, 0xF0F0F0F0D2LL };
  
 void setup(void){
-  //Prepare the radio module
-  printf("\nPreparing interface\n");
+  role = role_ping_out;
   radio.begin();
-  radio.setRetries( 15, 15);
+  radio.setRetries(15,15);
   radio.setChannel(0x4c);
   radio.setPALevel(RF24_PA_MAX);
-  radio.setPALevel(RF24_PA_MAX);
- 
   radio.openWritingPipe(pipes[0]);
-  radio.openReadingPipe(1,pipes[1]);
+  radio.openReadingPipe(1,pipes[1])
   radio.startListening();
   radio.printDetails();
- 
 }
  
-bool switchLight(int action){
-  //This function send a message, the 'action', to the arduino and wait for answer
-  //Returns true if ACK package is received
-  //Stop listening
-  radio.stopListening();
-  unsigned long message = action;
-  printf("Now sending %lu...", message);
- 
-  //Send the message
-  bool ok = radio.write( &message, sizeof(unsigned long) );
-  if (ok)
-    printf("ok...");
-  else
-    printf("failed.\n\r");
-  //Listen for ACK
-  radio.startListening();
-  //Let's take the time while we listen
-  unsigned long started_waiting_at = __millis();
-  bool timeout = false;
-  while ( ! radio.available() && ! timeout ) {
-    __msleep(10);
-    if (__millis() - started_waiting_at > 1000 )
-      timeout = true;
- 
-  }
- 
-  if( timeout ){
-    //If we waited too long the transmission failed
-      printf("Failed, response timed out.\n\r");
-      return false;
-  }else{
-    //If we received the message in time, let's read it and print it
-    unsigned long got_time;
-    radio.read( &got_time, sizeof(unsigned long) );
-    printf("Got response %lu, round-trip delay: %lu\n\r",got_time,__millis()-got_time);
-    return true;
-  }
- 
+bool sendCommand(int[] command){
+    radio.stopListening();
+
+    printf("Send Command %d to %d", command[1], command[0]);
+
+	bool ok = radio.write( &command, sizeof(int) * 4 );
+    
+    if (ok)
+      printf("rad write ok...");
+    else
+      printf("rad write failed.\n\r");
+
+    // Now, continue listening
+    radio.startListening();
+
+    // Wait here until we get a response, or timeout (250ms)
+    unsigned long started_waiting_at = __millis();
+    bool timeout = false;
+    while ( ! radio.available() && ! timeout ) {
+	// by bcatalin » Thu Feb 14, 2013 11:26 am 
+	__msleep(5); //add a small delay to let radio.available to check payload
+      if (__millis() - started_waiting_at > 200 )
+        timeout = true;
+    }
+
+    // Describe the results
+    if ( timeout )
+    {
+      printf("NORP Failed, response timed out.\n\r");
+    }
+    else
+    {
+      // Grab the response, compare, and send to debugging spew
+      unsigned long got_time;
+      radio.read( &got_time, sizeof(unsigned long) );
+
+      // Spew it
+      printf("Got response %lu, round-trip delay: %lu\n\r",got_time,__millis()-got_time);
+    }
+
+    // Try again 1s later
+	sleep(1); 
 }  
  
 int main( int argc, char ** argv){
@@ -80,8 +80,11 @@ int main( int argc, char ** argv){
     bool switched = false;
     int counter = 0;
  
+	int[] command = { 9, 8, 7, 6};
+	sendCommand(command);
+	
     //Define the options
- 
+ 	/*
     while(( choice = getopt( argc, argv, "f:")) != -1){
  
         if (choice == 'f'){
@@ -127,4 +130,5 @@ int main( int argc, char ** argv){
        else
          return 2;
    }
+   */
 }
