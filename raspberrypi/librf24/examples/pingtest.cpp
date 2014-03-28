@@ -121,8 +121,13 @@ void loop(void)
     // Take the time, and send it.  This will block until complete
     unsigned long time = piz++; //__millis();
     printf("Now sending %lu...",time);
-    bool ok = radio.write( &time, sizeof(unsigned long) );
-    
+
+    //bool ok = radio.write( &time, sizeof(unsigned long) );
+    int cmd[4] = {7, 9, 11, 13};
+    bool ok = radio.write( &cmd, sizeof(cmd));
+    printf("wrote %d", cmd[2]);
+
+
     if (ok)
       printf("rad write ok...");
     else
